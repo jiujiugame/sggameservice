@@ -1,9 +1,9 @@
-package com.fly.demo.dao;
+package com.jiujiu.sggame.dao;
 
 import java.util.List;
 
-import com.fly.demo.common.PaginationSupport;
-import com.fly.demo.entity.User;
+import com.jiujiu.sggame.common.PaginationSupport;
+import com.jiujiu.sggame.entity.User;
 
 /**
  * 
@@ -32,7 +32,7 @@ public interface UserDAO
      * @return
      * 
      */
-    int deleteById(Long id);
+    int deleteById(String id);
     
     /**
      * 根据主键id列表删除数据
@@ -41,7 +41,7 @@ public interface UserDAO
      * @return
      * 
      */
-    int deleteById(Long[] ids);
+    int deleteById(String[] ids);
     
     /**
      * 根据主键id列表删除数据
@@ -50,7 +50,7 @@ public interface UserDAO
      * @return
      * 
      */
-    int deleteById(List<Long> ids);
+    int deleteById(List<String> ids);
     
     /**
      * 增加记录(插入全字段)
@@ -94,7 +94,7 @@ public interface UserDAO
      * @return
      * 
      */
-    User queryById(Long id);
+    User queryById(String id);
     
     /**
      * 根据条件分页查询

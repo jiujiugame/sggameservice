@@ -1,4 +1,4 @@
-package com.fly.demo.dao.impl;
+package com.jiujiu.sggame.dao.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,10 +6,10 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
-import com.fly.demo.common.PaginationSupport;
-import com.fly.demo.core.BaseDAO;
-import com.fly.demo.dao.UserDAO;
-import com.fly.demo.entity.User;
+import com.jiujiu.sggame.common.PaginationSupport;
+import com.jiujiu.sggame.core.BaseDAO;
+import com.jiujiu.sggame.dao.UserDAO;
+import com.jiujiu.sggame.entity.User;
 
 /**
  * 
@@ -41,17 +41,17 @@ public class UserDAOImpl extends BaseDAO<User> implements UserDAO
     private String buildWhereClause(User criteria)
     {
         StringBuilder whereClause = new StringBuilder();
-        if (criteria.getId() != null)
+        if (criteria.getAccountId() != null)
         {
-            whereClause.append(" and id=?");
+            whereClause.append(" and account_id=?");
         }
-        if (criteria.getAge() != null)
+        if (criteria.getToken() != null)
         {
-            whereClause.append(" and age=?");
+            whereClause.append(" and token=?");
         }
-        if (criteria.getName() != null)
+        if (criteria.getTokenType() != null)
         {
-            whereClause.append(" and name=?");
+            whereClause.append(" and token_type=?");
         }
         if (whereClause.length() > 4)
         {
@@ -70,17 +70,17 @@ public class UserDAOImpl extends BaseDAO<User> implements UserDAO
     private List<Object> buildWhereParams(User criteria)
     {
         List<Object> whereParams = new ArrayList<Object>();
-        if (criteria.getId() != null)
+        if (criteria.getAccountId() != null)
         {
-            whereParams.add(criteria.getId());
+            whereParams.add(criteria.getAccountId());
         }
-        if (criteria.getAge() != null)
+        if (criteria.getToken() != null)
         {
-            whereParams.add(criteria.getAge());
+            whereParams.add(criteria.getToken());
         }
-        if (criteria.getName() != null)
+        if (criteria.getTokenType() != null)
         {
-            whereParams.add(criteria.getName());
+            whereParams.add(criteria.getTokenType());
         }
         return whereParams;
     }
@@ -113,9 +113,9 @@ public class UserDAOImpl extends BaseDAO<User> implements UserDAO
      * 
      */
     @Override
-    public int deleteById(Long id)
+    public int deleteById(String id)
     {
-        String sql = "delete from user where id=?";
+        String sql = "delete from user where account_id=?";
         return update(sql, id);
     }
     
@@ -127,14 +127,14 @@ public class UserDAOImpl extends BaseDAO<User> implements UserDAO
      * 
      */
     @Override
-    public int deleteById(Long[] ids)
+    public int deleteById(String[] ids)
     {
-        Long idsArr[][] = new Long[ids.length][1];
+    	String idsArr[][] = new String[ids.length][1];
         for (int i = 0; i < ids.length; i++)
         {
             idsArr[i][0] = ids[i];
         }
-        String sql = "delete from user where id=?";
+        String sql = "delete from user where account_id=?";
         return batch(sql, idsArr).length;
     }
     
@@ -146,14 +146,14 @@ public class UserDAOImpl extends BaseDAO<User> implements UserDAO
      * 
      */
     @Override
-    public int deleteById(List<Long> ids)
+    public int deleteById(List<String> ids)
     {
-        Long idsArr[][] = new Long[ids.size()][1];
+    	String idsArr[][] = new String[ids.size()][1];
         for (int i = 0; i < ids.size(); i++)
         {
             idsArr[i][0] = ids.get(i);
         }
-        String sql = "delete from user where id=?";
+        String sql = "delete from user where account_id=?";
         return batch(sql, idsArr).length;
     }
     
@@ -167,8 +167,8 @@ public class UserDAOImpl extends BaseDAO<User> implements UserDAO
     @Override
     public int insert(User bean)
     {
-        String sql = "insert into user (age, name ) values(?, ?)";
-        return update(sql, bean.getAge(), bean.getName());
+        String sql = "insert into user (token, token_type, account_id) values(?, ?, ?)";
+        return update(sql, bean.getToken(), bean.getTokenType(), bean.getAccountId());
     }
     
     /**
@@ -184,17 +184,25 @@ public class UserDAOImpl extends BaseDAO<User> implements UserDAO
         StringBuilder columns = new StringBuilder();
         StringBuilder values = new StringBuilder();
         List<Object> params = new ArrayList<Object>();
-        if (bean.getAge() != null)
+        if (bean.getAccountId() != null)
         {
-            columns.append(", age");
+            columns.append(", account_id");
             values.append(", ?");
-            params.add(bean.getAge());
+            params.add(bean.getAccountId());
         }
-        if (bean.getName() != null)
+        
+        if (bean.getTokenType() != null)
         {
-            columns.append(", name");
+            columns.append(", token_type");
             values.append(", ?");
-            params.add(bean.getName());
+            params.add(bean.getTokenType());
+        }
+        
+        if (bean.getToken() != null)
+        {
+            columns.append(", token");
+            values.append(", ?");
+            params.add(bean.getToken());
         }
         StringBuilder sql = new StringBuilder("insert into user (").append(columns.substring(1)).append(")");
         sql.append(" values(").append(values.substring(1)).append(")");
@@ -210,7 +218,7 @@ public class UserDAOImpl extends BaseDAO<User> implements UserDAO
     @Override
     public List<User> queryAll()
     {
-        String sql = "select id, age, name from user";
+        String sql = "select account_id, token, token_type from user";
         return query(User.class, sql);
     }
     
@@ -224,7 +232,7 @@ public class UserDAOImpl extends BaseDAO<User> implements UserDAO
     @Override
     public List<User> queryByCriteria(User criteria)
     {
-        StringBuilder sql = new StringBuilder("select id, age, name from user ");
+        StringBuilder sql = new StringBuilder("select account_id, token, token_type from user ");
         String whereClause = buildWhereClause(criteria);
         List<Object> whereParams = buildWhereParams(criteria);
         if (StringUtils.isNotEmpty(whereClause))
@@ -242,9 +250,9 @@ public class UserDAOImpl extends BaseDAO<User> implements UserDAO
      * 
      */
     @Override
-    public User queryById(Long id)
+    public User queryById(String id)
     {
-        String sql = "select id, age, name from user where id=?";
+        String sql = "select account_id, token, token_type from user where account_id=?";
         return (User)queryFirst(User.class, sql, id);
     }
     
@@ -260,7 +268,7 @@ public class UserDAOImpl extends BaseDAO<User> implements UserDAO
     @Override
     public PaginationSupport<User> queryForPagination(User criteria, int pageNo, int pageSize)
     {
-        StringBuilder sql = new StringBuilder("select id, age, name from user");
+        StringBuilder sql = new StringBuilder("select account_id, token, token_type from user");
         String whereClause = buildWhereClause(criteria);
         List<Object> whereParams = buildWhereParams(criteria);
         if (StringUtils.isNotEmpty(whereClause))
@@ -301,10 +309,10 @@ public class UserDAOImpl extends BaseDAO<User> implements UserDAO
     @Override
     public int updateByCriteria(User bean, User criteria)
     {
-        StringBuilder sql = new StringBuilder("update user set age=?, name=?");
+        StringBuilder sql = new StringBuilder("update user set token=?, token_type=?");
         List<Object> params = new ArrayList<Object>();
-        params.add(bean.getAge());
-        params.add(bean.getName());
+        params.add(bean.getToken());
+        params.add(bean.getTokenType());
         String whereClause = buildWhereClause(criteria);
         List<Object> whereParams = buildWhereParams(criteria);
         if (StringUtils.isNotEmpty(whereClause))
@@ -329,15 +337,15 @@ public class UserDAOImpl extends BaseDAO<User> implements UserDAO
         StringBuilder sql = new StringBuilder("update user set");
         StringBuilder columns = new StringBuilder();
         List<Object> params = new ArrayList<Object>();
-        if (bean.getAge() != null)
+        if (bean.getTokenType() != null)
         {
-            columns.append(", age=?");
-            params.add(bean.getAge());
+            columns.append(", token_type=?");
+            params.add(bean.getTokenType());
         }
-        if (bean.getName() != null)
+        if (bean.getToken() != null)
         {
-            columns.append(", name=?");
-            params.add(bean.getName());
+            columns.append(", token=?");
+            params.add(bean.getToken());
         }
         sql.append(columns.substring(1));
         String whereClause = buildWhereClause(criteria);
@@ -360,8 +368,8 @@ public class UserDAOImpl extends BaseDAO<User> implements UserDAO
     @Override
     public int updateById(User bean)
     {
-        String sql = "update user set age=?, name=? where id=?";
-        return update(sql, bean.getAge(), bean.getName(), bean.getId());
+        String sql = "update user set token=?, token_type=? where account_id=?";
+        return update(sql, bean.getToken(), bean.getTokenType(), bean.getAccountId());
     }
     
     /**
@@ -377,19 +385,19 @@ public class UserDAOImpl extends BaseDAO<User> implements UserDAO
         StringBuilder sql = new StringBuilder("update user set");
         StringBuilder columns = new StringBuilder();
         List<Object> params = new ArrayList<Object>();
-        if (bean.getAge() != null)
+        if (bean.getToken() != null)
         {
-            columns.append(", age=?");
-            params.add(bean.getAge());
+            columns.append(", token=?");
+            params.add(bean.getToken());
         }
-        if (bean.getName() != null)
+        if (bean.getTokenType() != null)
         {
-            columns.append(", name=?");
-            params.add(bean.getName());
+            columns.append(", token_type=?");
+            params.add(bean.getTokenType());
         }
         sql.append(columns.substring(1));
-        sql.append(" where id=?");
-        params.add(bean.getId());
+        sql.append(" where account_id=?");
+        params.add(bean.getAccountId());
         return update(sql.toString(), params.toArray());
     }
 }

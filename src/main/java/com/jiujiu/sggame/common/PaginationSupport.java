@@ -1,4 +1,4 @@
-package com.fly.demo.common;
+package com.jiujiu.sggame.common;
 
 import java.util.LinkedList;
 import java.util.List;

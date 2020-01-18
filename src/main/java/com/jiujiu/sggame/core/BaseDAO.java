@@ -1,4 +1,4 @@
-package com.fly.demo.core;
+package com.jiujiu.sggame.core;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -20,8 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
-import com.fly.demo.common.DataException;
-import com.fly.demo.common.PaginationSupport;
+import com.jiujiu.sggame.common.DataException;
+import com.jiujiu.sggame.common.PaginationSupport;
 
 /**
  * 

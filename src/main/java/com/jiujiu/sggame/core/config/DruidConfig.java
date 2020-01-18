@@ -1,4 +1,4 @@
-package com.fly.demo.core.config;
+package com.jiujiu.sggame.core.config;
 
 import java.sql.SQLException;
 

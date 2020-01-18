@@ -1,4 +1,4 @@
-package com.fly.demo.service.impl;
+package com.jiujiu.sggame.service.impl;
 
 import java.util.List;
 
@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fly.demo.common.PaginationSupport;
-import com.fly.demo.dao.UserDAO;
-import com.fly.demo.entity.User;
-import com.fly.demo.service.UserService;
+import com.jiujiu.sggame.common.PaginationSupport;
+import com.jiujiu.sggame.dao.UserDAO;
+import com.jiujiu.sggame.entity.User;
+import com.jiujiu.sggame.service.UserService;
 
 /**
  * 
@@ -29,39 +29,39 @@ public class UserServiceImpl implements UserService
     UserDAO userDAO;
     
     @Override
-    public void insert(User user)
+    public int insert(User user)
     {
-        userDAO.insert(user);
+        return userDAO.insert(user);
     }
     
     @Override
-    public void deleteById(Long id)
+    public void deleteById(String id)
     {
         userDAO.deleteById(id);
     }
     
     @Override
-    public long deleteById(Long[] ids)
+    public long deleteById(String[] ids)
     {
         return userDAO.deleteById(ids);
     }
     
     @Override
-    public long deleteById(List<Long> ids)
+    public long deleteById(List<String> ids)
     {
         return userDAO.deleteById(ids);
     }
     
     @Override
-    public void update(User user)
+    public int update(User user)
     {
-        userDAO.updateById(user);
+        return userDAO.updateById(user);
     }
     
     @Override
     public void saveOrUpdate(User user)
     {
-        if (user.getId() != null)
+        if (user.getAccountId() != null)
         {
             userDAO.updateById(user);
         }
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService
     }
     
     @Override
-    public User queryById(Long id)
+    public User queryById(String id)
     {
         return userDAO.queryById(id);
     }

@@ -1,9 +1,9 @@
-package com.fly.demo.service;
+package com.jiujiu.sggame.service;
 
 import java.util.List;
 
-import com.fly.demo.common.PaginationSupport;
-import com.fly.demo.entity.User;
+import com.jiujiu.sggame.common.PaginationSupport;
+import com.jiujiu.sggame.entity.User;
 
 /**
  * 
@@ -22,7 +22,7 @@ public interface UserService
      * @param user
      * @see [类、类#方法、类#成员]
      */
-    void insert(User user);
+	int insert(User user);
     
     /**
      * 根据id删除
@@ -30,7 +30,7 @@ public interface UserService
      * @param id
      * @see [类、类#方法、类#成员]
      */
-    void deleteById(Long id);
+    void deleteById(String id);
     
     /**
      * 根据主键id列表删除数据
@@ -38,7 +38,7 @@ public interface UserService
      * @param ids 主键列表
      * @return
      */
-    public long deleteById(Long[] ids);
+    public long deleteById(String[] ids);
     
     /**
      * 根据主键id列表删除数据
@@ -46,7 +46,7 @@ public interface UserService
      * @param ids 主键列表
      * @return
      */
-    public long deleteById(List<Long> ids);
+    public long deleteById(List<String> ids);
     
     /**
      * 根据id更新
@@ -54,7 +54,7 @@ public interface UserService
      * @param user
      * @see [类、类#方法、类#成员]
      */
-    void update(User user);
+    int update(User user);
     
     /**
      * 新增/根据id更新
@@ -71,7 +71,7 @@ public interface UserService
      * @return
      * @see [类、类#方法、类#成员]
      */
-    User queryById(Long id);
+    User queryById(String id);
     
     /**
      * 查询全部
