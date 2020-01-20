@@ -38,23 +38,13 @@ public class UserController
     
     @ResponseBody
     @RequestMapping(value = "/login" , method = RequestMethod.POST)
-    public Map<String, Object> view(@RequestParam String token, @RequestParam(required = false) String tokenType, @RequestParam String uid){
+    public Map<String, Object> view(@RequestParam String token){
     
-    	tokenType = "bearer"; 
-    	
     	if (token == null || token.length() == 0) {
 			return SnsJsonUtil.resultError(new HashMap<String, Object>(), "token 为空!", "");
 		}
     	
-    	if (uid == null || uid.length() == 0) {
-    		return SnsJsonUtil.resultError(new HashMap<String, Object>(), "uid 为空!", "");
-		}
-    	
-    	if (tokenType == null || tokenType.length() == 0) {
-    		return SnsJsonUtil.resultError(new HashMap<String, Object>(), "tokenType 为空!", "");
-		}
-    	
-    	String result = HttpClientUtil.doPost(tokenType+" "+token, requestUrl, null);
+    	String result = HttpClientUtil.doHttpPost(requestUrl, token, null);
     	if (result == null || result.length() == 0) {
     		return SnsJsonUtil.resultError(new HashMap<String, Object>(), "验证无效!", "");
 		}
@@ -70,8 +60,8 @@ public class UserController
 				if(data != null) {
 					Map<String, Object> account = (Map<String, Object>) data.get("account");
 					if (account != null) {
-						String _uid = (String) account.get("uid");
-						if (!_uid.equals(uid)) {
+						String uid = (String) account.get("uid");
+						if (uid == null) {
 							return SnsJsonUtil.resultError(new HashMap<String, Object>(), "token与uid不一致", "");
 						}else {
 							User user = userService.queryById(uid);
@@ -79,14 +69,14 @@ public class UserController
 								user = new User();
 								user.setAccountId(uid);
 								user.setToken(token);
-								user.setTokenType(tokenType);
+								user.setTokenType(token);
 								int res = userService.insert(user);
 								if (res > 0) {
 									return SnsJsonUtil.result(new HashMap<String, Object>(), "登录成功", uid);
 								}
 							}else {
 								user.setToken(token);
-								user.setTokenType(tokenType);
+								user.setTokenType(token);
 								int res = userService.update(user);
 								if (res > 0) {
 									return SnsJsonUtil.result(new HashMap<String, Object>(), "登录成功", uid);
@@ -99,19 +89,5 @@ public class UserController
 		}
     	return SnsJsonUtil.resultError(new HashMap<String, Object>(), "登录失败", "");
     }
-    
-//    @ResponseBody
-//    @RequestMapping(value = "/list/{pageNo}")
-//    public List<User> list(@PathVariable Integer pageNo, @RequestParam(defaultValue = "5") int pageSize)
-//    {
-//        pageSize = Math.max(pageSize, 2);
-//        return userService.queryForPagination(new User(), pageNo, pageSize).getItems();
-//    }
-//    
-//    @ResponseBody
-//    @RequestMapping(value = "/all")
-//    public List<User> all()
-//    {
-//        return userService.queryAll();
-//    }
+   
 }

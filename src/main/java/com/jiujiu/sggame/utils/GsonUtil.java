@@ -28,29 +28,29 @@ public class GsonUtil {
 		}
 	}
 
-	public static List<Map> getMapList(String src) {
+	public static List<Map<String, Object> > getMapList(String src) {
 
 		String res = FileUtil.getFileContent(src, utf8);
 		if (res != null && res.length() != 0) {
-			return gson.fromJson(res, new TypeToken<List<Map>>() {
+			return gson.fromJson(res, new TypeToken<List<Map<String, Object> >>() {
 			}.getType());
 		}
 		return null;
 	}
 
-	public static Map getContentMap(String content) {
+	public static Map<String, Object>  getContentMap(String content) {
 
 		if (content != null && content.length() != 0) {
-			return gson.fromJson(content, new TypeToken<Map>() {
+			return gson.fromJson(content, new TypeToken<Map<String, Object> >() {
 			}.getType());
 		}
 		return null;
 	}
 
-	public static List<Map> getContentMapList(String content) {
+	public static List<Map<String, Object> > getContentMapList(String content) {
 
 		if (content != null && content.length() != 0) {
-			return gson.fromJson(content, new TypeToken<List<Map>>() {
+			return gson.fromJson(content, new TypeToken<List<Map<String, Object> >>() {
 			}.getType());
 		}
 		return null;
